@@ -1,0 +1,346 @@
+\documentclass[runningheads]{llncs}
+\usepackage{xspace}
+\usepackage{graphicx}
+\usepackage[normalem]{ulem} % \emph should italicize, not underline
+
+%\input{macros}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{ifthen}
+\usepackage{alltt}
+\usepackage{amssymb}
+\newboolean{showcomments}
+\setboolean{showcomments}{true}
+\ifthenelse{\boolean{showcomments}}
+  {\newcommand{\nb}[2]{
+	\fbox{\bfseries\sffamily\scriptsize#1}
+    {\sf\small$\blacktriangleright$\textit{#2}$\blacktriangleleft$}
+    % \marginpar{\fbox{\bfseries\sffamily#1}}
+   }
+   \newcommand{\cvsversion}{\emph{\scriptsize$-$Id: main.tex 10764 2007-07-20 09:52:39Z akuhn $-$}}
+  }
+  {\newcommand{\nb}[2]{}
+   \newcommand{\cvsversion}{}
+  }
+\newcommand{\here}{\nb{***}{CONTINUE HERE}}
+\newcommand\fix[1]{\nb{FIX}{#1}}
+\newcommand\todo[1]{\nb{TO DO}{#1}}
+\newcommand\md[1]{\nb{MD}{#1}}
+\newcommand\AK[1]{\nb{akuhn}{#1}}
+\newcommand\MH[1]{\nb{Michael}{#1}}
+\newcommand\cfb[1]{\nb{Carl Friedrich}{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{hyperref}
+\hypersetup{
+   a4paper,
+   colorlinks,
+   urlcolor=blue,
+   citecolor=blue,
+   linkcolor=blue,
+   pdftitle = {},
+   pdfauthor = {},
+}
+\renewcommand{\sectionautorefname}{Section}
+\renewcommand{\figureautorefname}{Figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\mainmatter
+
+\title{DYLA'12: Sixth Workshop on Dynamic Languages and Applications}
+%\subtitle{Subtitle Text, if any}
+
+\author{Alexandre Bergel\inst{1}, Damien Cassou\inst{2}, Serge Stinckwich\inst{3}, Jorge Ressia\inst{4}, Ulrik P. Schultz\inst{5}}
+
+\titlerunning{5th Workshop on Dynamic Languages and Applications}
+
+\authorrunning{A. Bergel, D. Cassou, S. Stinckwich, J. Ressia, U.P. Schulz}
+%\authorrunning{Ar\'evalo, Bergel, Bolz, Fabry, Kuhn}
+
+\institute{\ \inst{1} Pleiad Lab, DCC, University of Chile, Santiago, Chile\\ \url{alexandre.bergel@me.com}\\
+	\ \inst{2} Hasso-Plattner-Institute\\\url{damien.cassou@gmail.com}\\
+	\ \inst{3} IRD, Vietnam\\\url{serge.stinckwich@gmail.com}\\
+	\ \inst{4} University of Bern, Switzerland\\\url{jorge.ressia@gmail.com}\\
+	\ \inst{5} MIP, Odense, Denkmark\\\url{ups@mmmi.sdu.dk}\\
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\maketitle
+
+\begin{abstract}
+%Following last two years' workshop on dynamic languages at the ECOOP conference, the Dyla 2007 workshop was a successful and popular event. As its name implies, the workshop's focus was on dynamic languages and their applications. Topics and discussions at the workshop included macro expansion mechanisms, extension of the method lookup algorithm, language interpretation, reflexivity and languages for mobile ad hoc networks.
+
+The main goal of this workshop is to bring together different dynamic language communities and favoring cross communities interaction. Dyla 2012 will be organized as a full day meeting, partly devoted to presentation of submitted position papers, partly devoted to tool demonstration and pair programming sessions.  All accepted papers will be made available for download from the workshop's web site and will be available on the ACM Digital Library.
+
+%In this report, we provide an overview of the presentations and a summary of discussions.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Workshop Description and Objective}
+
+The advent of Java and C\# has been a major breakthrough in the adoption of some important object-oriented language characteristics. It turned academic features like interfaces, garbage collection and meta-programming into technologies generally accepted by industry. However, the massive adoption of these languages now also gives rise to a growing awareness of their limitations. 
+A number of reactions from industry testify this: {\tt invokedynamic} bytecode instruction will be included in the next Java virtual machine; the dynamic language runtime (DLR) is gaining popularity; C\# will adopt  {\tt dynamic} as a valid static type.  There was the first JSConf and JRubyConf this year. Gartner prognoses further growth of dynamic languages\footnote{\url{http://blogs.gartner.com/mark_driver/2008/12/10/}}.
+
+Researchers and practitioners feel themselves wrestling with the static type systems, the overly complex abstract grammars, the simplistic concurrency provisions, the very limited reflection capabilities and the absence of higher-order language constructs such as delegation, closures and continuations.
+
+On the one hand, dynamic languages like Ruby, Python, JavaScript, and Lua are getting ever more popular. Academia has a major role to play in this picture by helping pushing such languages into the mainstream. On the other hand, this requires us to look back and pick up what is out there in existing dynamic languages (such as Lisp, Scheme, Smalltalk, Self, \dots) to be recovered for the future. We need to further explore the power of future dynamic language constructs in the context of new challenging fields such as aspect-orientation, pervasive computing, mobile code, context-aware computing, etc. 
+
+The goal of this workshop is to act as a forum where we can discuss new advances in the design, implementation and application of dynamically typed languages that, sometimes radically, diverge from the  statically typed class-based mainstream with limited reflective capabilities. Another objective of the workshop is to discuss new as well as older ``forgotten'' languages and features in this context. Topics of interest include, but are certainly not limited to: 
+
+\begin{itemize}
+\item what features make a language a dynamic one?
+\item agents, actors, active object, distribution, concurrency and mobility
+\item delegation, prototypes, mixins, traits
+\item first-class closures, continuations, environments
+\item reflection and meta-programming
+\item (dynamic) aspects for dynamic languages
+\item higher-order objects \& messages
+\item \dots\ other exotic dynamic features
+\item multi-paradigm \& static/dynamic-marriages
+\item (concurrent/distributed/mobile/aspect) virtual machines
+\item optimization of dynamic languages
+\item automated reasoning about programs written in dynamic languages
+\item improved or novel IDE support for dynamic languages
+\item empirical studies about the application of dynamic languages 
+\item best practices and patterns specific to dynamic languages
+\item use of dynamic features by library \& framework developers
+\item reverse engineering and analysis of dynamic applications
+\item program correctness through unit testing (as opposed to types) %\MH{That would never be a proof, unless you test with \emph{all} possible input values. I doubt this is a good topic. It's actually offensive, as it claims that unit testing can replace proving, which is just plain wrong.}\ab{you're right}
+\item Smalltalk, Python, Ruby, Javascript, Scheme, Lisp, Self, ABCL, Prolog, \dots
+\item \dots\ any topic relevant in applying and/or supporting dynamic languages.
+\end{itemize}
+
+In addition to the organizers, a program committee will help evaluating the submitted papers.
+
+%In addition to the organizers, the program committee of the workshop includes:
+%\begin{itemize}
+%\item Johan Fabry            (Pleiad Lab, University of Chile, Santiago, Chileé)
+%\item Gabriela Ar\'evalo         (University of La Plata, Argentina)
+%\item Jean-Baptiste Arnaud                (RMoD Team, INRIA Lille Nord Europe, France)
+%\item David Schneider 	(Heinrich-Heine-Universit\"{a}t, D\"{u}ssel\-dorf, Germany)
+%\item ...
+%%\item Robert Hirschfeld       (Hasso-Plattner-Institut, University of Potsdam, Germany)
+%%\item Matthew Flatt           (University of Utah, USA)
+%%\item Dave Thomas            (Bedarra Research Labs, Canada)
+%%\item Laurence Tratt            (King's College London, UK)
+%\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Call for position papers}
+
+The workshop will have a \emph{demo-oriented style}. The idea is to allow participants to demonstrate new and interesting features and discuss what they feel is relevant for the dynamic language community. All participants need to submit a two-page description (LNCS format) of their presentation or/and tool demonstration. 
+
+Each accepted paper will be presented for 20--30 minutes. Moreover, all workshop attendees will be asked to give 10-minute ``lightning demos'' of whatever they bring with them. A dedicated session will be allocated for this, provided there is ample time available.
+
+%Depending on the submissions, one format could be to group the submissions into groups of three consecutive talks, followed by a joint discussion session of 10--15 minutes. This format is known from the MSR conference and many related workshop series, where it has been shown to foster discussion and collaboration among participants. In the afternoon, emerging topics from these sessions could be further discussed in working groups. 
+
+A session on pair programming is also planned. People will then get a chance to share their technology by closely interacting with other participants. 
+
+%All accepted papers will be submitted as a CEUR Workshop proceeding volume\footnote{\url{http://ftp.informatik.rwth-aachen.de/Publications/CEUR-WS/}}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Targeted audience}
+
+The expected audience of this workshop is to gather practitioners and researchers sharing the same interest in dynamically typed languages. Ruby, Python, Smalltalk, Scheme and Lua are gaining a significant popularity both in industry and academia. However, each community has the tendency to only look at what it produced. Broadening the scope of each community is the goal of the workshop. To achieve this goal we will form a PC with leading persons from all languages mentioned above, this should foster participation from all targeted communities.
+
+%\AK{Added sentence on PC.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Biographies}
+
+\noindent \emph{Alexandre Bergel} is Assistant Professor at the University of Chile, member of the Pleiad research group. He is interested in the field of software engineering and software quality. His research effort goes to static and dynamic analysis, software visualization, software evolution and programming languages. His experiments are essentially conducted on the Moose platform and the Pharo programming language. Alexandre published in high-quality journal (IEEE TSE) and conferences (ECOOP, OOPSLA, ICSP).\\
+
+%\noindent \emph{Carl Friedrich Bolz} is a PhD student at the
+%Heinrich-Heine-Universit\"{a}t D\"{u}ssel\-dorf working for Michael Leuschel.
+%Carl Friedrich is mainly interested in the efficient implementation of dynamic
+%languages to narrow the performance gap to more static languages. He is one of
+%the core developers of the PyPy project and heavily involved in the development
+%of PyPy's just-in-time compiler.\\
+
+%\noindent \emph{St\'ephane Ducasse} is research director since 2007 at INRIA-Lille Nord Europe where he leads the RMoD team. 
+%%  He is expert in object-oriented language design, dynamic languages, reflective programming, language semantics as well as reengineering, program analysis, visualizations, software metrics. 
+%%Recently he worked on traits, composable method groups, and this work got some impact. Traits have been introduced in AmbientTalk, Slate, Pharo Perl-6, PHP 5.4 and Squeak. They influenced Scala and Fortress SUN Microsystems.  
+%St\'ephane is one of the developer of Pharo\footnote{\url{http://www.pharo.project.org}} an open-source language inspired by Smalltalk. He is one of the core developer of Moose, an open-source reengineering environment\footnote{\url{http://moose.unibe.ch}}.   He is   the president  of the European Smalltalk User Group and organizes the yearly international  conference on Smalltalk. He wrote a couple of fun books to teach programming and other serious topics such as dynamic web development\footnote{\url{http://book.seaside.st}}, together with Lukas Renggli.\\
+
+%\noindent \emph{Lukas Renggli} is an active open-source developer. He is a core developer of Seaside and author of Magritte, Pier, PetitParser, Helvetia, and many other widely adopted libraries and tools. He has received a PhD in Computer Science from the Software Composition Group, University of Bern, Switzerland in October 2010. Lukas Renggli is an independent software engineering consultant and will start to work at Google Zurich in 2011.\\
+
+\noindent \emph{Jorge Ressia} is a PhD student in Computer Science at the Software
+Composition Group, University of Bern, Switzerland. His research
+interest are Object-Oriented Programming and Design with particular
+emphasis on reflection and meta-programming. He is a core developer of
+Albedo and Prisma, two dynamic adaptation  tools, as well as TextLint
+a ruled-based tool to check for common style errors in natural
+language.
+
+%\noindent \emph{Simon Denier} is a post-doctoral researcher in the RMoD team at INRIA Lille-Nord Europe. During his thesis, he practiced object and aspect-oriented programming to figure out programming in the small. Nowadays, he is interested in reverse engineering and reengineering of large programs. He works on software assessment, software visualization, and change simulation. He is one of the core maintainer of Moose , a platform for tools and collaboration in reengineering. With reengineering becoming an important activity in day-to-day development, he is looking forward to push such tools in programming environments.\\
+
+%\noindent \emph{Michael Haupt} is a post-doctoral researcher in the Software Architecture Group at Hasso-Plattner-Institut in Potsdam. His research interests are in improving the modularity of complex software system architectures as well as in implementing programming languages, in which latter area his main focus is on faithfully regarding programming paradigms' core mechanisms as primary subjects of language implementation effort. Michael holds a doctoral degree from Technische Universit\"{a}t Darmstadt, where he has worked on the Steamloom virtual machine to provide run-time support for AOP languages. He has published papers on this and other AOSD-related subjects in the L'Objet, IEEE Software, and IET Software journals as well as in the AOSD, VEE, OOPSLA, ECOOP, and SAC conference series. Michael has served as PC member for ECOOP 2008, as reviewer for TAOSD and IEEE TSE, and has been supporting reviewer for the AOSD, ECOOP, ICSE, FSE, MODELS, and VEE conference series. He has co-organised the Dynamic Aspects Workshop series in conjunction with the AOSD conferences, and the Virtual Machines and Intermediate Languages workshop series in conjunction with the AOSD and OOPSLA conferences. Michael is a member of the ACM.\\
+
+%\noindent \emph{Adrian Kuhn} is a PhD candidate at the University of Bern with the Software Composition Group. His advisor is Oscar Nierstrasz. Adrian's main research interests are software development tools, test-driven development, virtual machines, and dynamic programming languages (Smalltalk, Ruby). At the moment, Adrian works on Software Cartography. Adrian was involved in the organization of the FAMOORS workshop at TOOLS 2007, the WASDETT workshop at ECOOP 2008, and the SUITE workshop at ICSE 2009. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Content}
+
+%This section describes the organisation aspects of the workshop. 
+%The accepted papers and workshop slides can be found on the workshop's website\footnote{\url{dyla2007.unibe.ch}}. 
+
+%\paragraph{Contrasting compile-time meta-programming in Metalua and Converge} -- Fabien Fleutot and Laurence Tratt
+
+%\begin{quote}
+%Powerful, safe macro systems allow programs to be programatically constructed by the user at compile-time. Such systems have 
+%traditionally been largely confined to LISP-like languages and their successors. In this paper we describe and compare two modern, dynamically 
+%typed languages Converge and Metalua, which both have macro-like systems. We show how, in different ways, they build upon traditional macro systems to explore new ways of constructing programs. 
+%\end{quote}
+
+%This presentation raised several questions regarding differences with other macro mechanism such as the one of Lisp-like languages. Also some issues regarding hygienic were successfully addressed by the presenter.  
+
+%Relevant references related to this work are:
+%\begin{itemize}
+%\item The Converge programming language\footnote{\href{http://convergepl.org/}{convergepl.org/}} \cite{Tratt05a}
+%\item Metalua\footnote{\url{metalua.luaforge.net}}
+%\end{itemize}
+
+%\paragraph{Collective Behavior} -- Adrian Kuhn
+
+%\begin{quote}
+%When modelling a system, often there are properties and operations related to a group of objects rather than to a single object only. 
+%For example, given a person object with an income property, the average 
+%income applies to a group of persons as a whole rather than to a single 
+%person. In this paper we propose to extend programming languages with 
+%the notion of collective behavior. Collective behavior associates custom 
+%behavior with collection instances, based on the type of its elements. 
+%However, collective behavior is modeled as part of the element's rather 
+%than the collection's class. We present a proof-of-concept implementation of collective behavior using Smalltalk, and validate the usefulness of collective behavior considering a real-life case study: 20\% of the case-study’s 
+%domain logic is subject to collective behavior. 
+%\end{quote}
+
+%The need for an accurate comparison with C++ templates was a good point raised by the audience. This will be addressed in future work, which also cover a formal description of the semantics.\\
+
+%
+%\paragraph{How to not write Virtual Machines for Dynamic Languages} -- Carl Fried\-rich Bolz and Armin Rigo
+
+%\begin{quote}
+%Typical modern dynamic languages have a growing number 
+%of implementations. We explore the reasons for this situation, and the 
+%limitations it imposes on open source or academic communities that 
+%lack the resources to fine-tune and maintain them all. It is sometimes 
+%proposed that implementing dynamic languages on top of a standardized 
+%general-purpose object-oriented virtual machine (like Java or .NET) 
+%would help reduce this burden. We propose a complementary alternative 
+%to writing custom virtual machine (VMs) by hand, validated by the 
+%PyPy project: flexibly generating VMs from a high-level ``specification'', 
+%inserting features and low-level details automatically -- including 
+%good just-in-time compilers tuned to the dynamic language at hand. 
+%We believe this to be ultimately a better investment of efforts than 
+%the development of more and more advanced general-purpose object 
+%oriented VMs. In this paper we compare these two approaches in detail.
+%\end{quote}
+
+%This presentation was preceded with a very convincing demonstration. A small interpret for a reverse polish notation calculator has been implemented. Very aggressive optimisations resulted in an highly optimised generated compiler for this calculator. Discussions were mainly about VM performance, especially when compared with Hotspot. Implementing Java on top of PyPy in order to assess VM performance was suggested. More information about PyPy is available online\footnote{\url{codespeak.net/pypy/dist/pypy/doc/news.html} and \url{pypy.org}}.\\
+
+%
+%\paragraph{On the Interaction of Method Lookup and Scope with Inheritance and Nesting} -- Gilad Bracha
+
+%\begin{quote}
+%Languages that support both inheritance and nesting of declarations define method lookup to first climb up the inheritance hierarchy and then recurse up the lexical hierarchy. We discuss weaknesses of 
+%this approach, present alternatives, and illustrate a preferred semantics 
+%as implemented in Newspeak, a new language in the Smalltalk
+%family. 
+%\end{quote}
+
+%Pros and cons for having explicit \emph{self} and \emph{outer} sends in presence of virtual classes were presented. Several questions were raised from the large audience. Some of them covered the need of virtual classes in presence of closure. Gilad's answer was that each completes the other.\\
+
+%
+%\paragraph{The Reflectivity: Sub-Method Reflection and more} -- Marcus Denker
+
+%\begin{quote}
+%Reflection has proved to be a powerful feature to support the design of development environments and to extend languages. 
+%However, the granularity of structural reflection stops at the method level. This is a problem since without sub-method reflection 
+%developers have to duplicate efforts, for example to introduce transparently pluggable type-checkers or fine-grained profilers. 
+
+%This demo presents the Reflectivity, a Smalltalk system that improves support for reflection in two ways: it provides an efficient
+%implementation of sub-method structural reflection and a simplified and generalized model of partial behavioral reflection. 
+%We present examples that use the new reflective features and discuss possible future work.
+%\end{quote}
+
+%A number of questions were raised concerning the memory overhead. This appears to be largely due to the architecture of VMs, which are bytecode based. AST compression is part of the future work.
+
+%Some work related to this presentation\footnote{\url{scg.unibe.ch/Research/Reflectivity/}} are \emph{Sub-Method Reflection}~\cite{Denk07b}, \emph{Unanticipated Partial Behavioral Reflection}~\cite{Roet07a} and \emph{Higher Abstractions for Dynamic Analysis}~\cite{Denk06c}.\\
+
+%\paragraph{AmbientTalk/2: Object-oriented Event-driven Programming in Mobile Ad hoc Networks} -- Elisa Gonzalez
+
+%\begin{quote}
+%The recent progress of wireless networks technologies and mobile hardware technologies has led to the emergence of a new generation of applications. These applications are deployed on mobile devices equipped with wireless infrastructure which collaborate spontaneously with other devices in the environment forming mobile ad hoc networks. Distributed programming in such setting is substantially complicated by the intermittent connectivity of the devices in the network and the lack of any centralized coordination facility. Any application designed for mobile ad hoc networks has to deal with these new hardware phenomena. Because the effects engendered by such phenomena often pervade the entire application, an appropriate computational model should be developed that eases distributed programming in a mobile network by taking these phenomena into account from the ground up. In the previous ECOOP edition, we presented and demonstrated AmbientTalk, a distributed object-oriented programming language specially designed for mobile ad hoc networks.
+
+%This demonstration showcases AmbientTalk/2, the latest incarnation of the AmbientTalk programming language which supplants its predecessor while preserving its fundamental characteristics. The language is still a so-called ambient-oriented programming language which allow objects to abstract over transient network failures. This demo will highlight the new design choices in AmbientTalk/2 and the rationale behind them. The most important ones are the adoption of an event-driven concurrency model that provides AmbientTalk/2 with finer grained distribution abstractions making it highly suitable for composing service objects across a mobile network, and the integration of leasing techniques for distributed memory management.
+
+%The demo is conceived as a hands-on experience in using the main features of the language where we show and discuss the following:
+
+%\begin{itemize}
+%\item The development of an ambient application from ground up that illustrates the simplicity and expressive power of AmbientTalk/2.
+
+%\item While developing the application, participants become gradually acquainted with AmbientTalk/2's concurrency and distribution object models as well as the dedicated language constructs to deal with partial failures, service discovery and distributed memory management.
+
+%\item We demonstrate how ambient applications actually behave in a real-life context by showing the execution of a small yet representative application on several portable devices such as laptops and smart phones.
+%\end{itemize}
+
+%AmbientTalk/2 is available at \url{prog.vub.ac.be/amop} with documentation and examples.
+%\end{quote}
+
+%This very convincing demonstration used a personal digital assistant to communicate to a laptop using a wireless communication protocol. Ambient\-Talk \cite{Dede06a} proves to be more expressive than traditional programming languages, especially about error recovery.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\section{Conclusion}
+
+%Most of the presentations and discussions of Dyla'07 present extensions of traditional dynamic languages. For example Metalua augments lua with an expressive macro mechanism, Converge is a Python dialect, Newspeak a Smalltalk dialect, and AmbientTalk a Self-like language. Comments and encouragement expressed by the audience asserted that dynamic languages constitute a viable research area. Efforts for experimentation and prototyping are greatly reduced in presence of a dynamic type system. 
+
+%Dyla'07 lived up to its expectations, with high-quality presentations and demonstrations. Discussion were lively and stimulating. 
+
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\subsection*{Acknowledgments} We wish to thank Michael Cebulla and Jan Szumiec for their precious support. We also wish to thank all the participants.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\bibliographystyle{plain}
+%\bibliographystyle{alpha}
+%\bibliography{scg}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\appendix
+%\section{List of Participants}
+
+%Jan Szumiec
+%Gilad Bracha
+%Lex Spoon
+%Jessie Dedecker
+%Elisa Gonsalez
+%Johan Fabry
+%Ellen Van Paesschen
+%Styn Timermont
+%Howard Thomson
+%Hans Schippers
+%Sean McDirmid
+%David Bar-on
+%Peter Osburg
+%Michael Perscheid
+%Marcus Denker
+%Adrian Kuhn
+%Samuele Pedroni
+%Carl Friedrich Bolz
+%Armin Rigo
+%Fabien Fleutot
+%Alexandre Bergel
+
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
